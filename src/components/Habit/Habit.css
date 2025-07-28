@@ -1,0 +1,129 @@
+.sorted-options button{
+  justify-content:space-between;
+  margin: 15px;
+  color: #f8fbfa;
+  background-color: black;
+  border-radius: 10px;
+  /* text-decoration: underline solid whitesmoke; */
+  border: 4px solid rgb(245, 5, 149);
+  padding: 10px;
+  cursor: pointer;
+}
+
+/* .sorted-options button-hover{ */
+  /* background-color: #fc0303; */
+/* } */
+
+
+.form-div {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+.form-div form > input {
+  width: 450px;
+  padding: 20px 20px;
+  border: none;
+  border-bottom: 1.5px solid blueviolet;
+}
+.form-div form > input:focus {
+  outline: none;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
+  border-bottom: 3px solid blueviolet;
+}
+.form-div form > input:active {
+  box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.4);
+}
+.form-div form > button {
+  padding: 10px 10px;
+  background-color: blueviolet;
+  color: white;
+  border-radius: 5px 5px;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+ 
+}
+
+
+.grocery-div {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+.grocery-div ul > li {
+  list-style: none;
+}
+
+
+
+.sorting {
+  display: flex;
+  justify-content: center;
+}
+.sorting ul li {
+  list-style: none;
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.error{
+  color: red;
+  text-align: center;
+}
+
+
+.grocerylist-div {
+    width: 750px;
+    margin: 20px 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+
+  
+  .li-style {
+    display: inline-block;
+    font-size: 24px;
+  }
+  .li-style-isPurchased {
+    text-decoration: line-through;
+  }
+  #edit-button {
+    padding: 10px 10px;
+    background-color: #fcdb03;
+    border-radius: 5px 5px;
+    color: black;
+    border: 2px solid black;
+    cursor: pointer;
+    /* border-style: none; */
+  }
+  #purchased-button {
+    padding: 10px 10px;
+     background-color: #03fc90;
+   
+    border-radius: 5px 5px;
+    color: black;
+    cursor: pointer;
+    /* border-style: none; */
+  }
+  #delete-button {
+    padding: 10px 10px;
+    background-color: #fc0303;
+    border-radius: 5px 5px;
+    color: black;
+    cursor: pointer;
+    /* border-style: none; */
+  }
+  #edit-button:active {
+    box-shadow: 5px 5px 30px red;
+  }
+  #purchased-button:active {
+    box-shadow: 5px 5px 30px red;
+  }
+  #delete-button:active {
+    box-shadow: 5px 5px 30px red;
+  }
+
+
+
+
