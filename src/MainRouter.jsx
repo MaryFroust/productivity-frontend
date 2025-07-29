@@ -1,5 +1,5 @@
 import Goal from './components/Goals/Goals'
-import Habit from './components/Habit/Habit'
+import Habit from './components/Habit/Habit2'
 import Nav from './components/Nav/Nav'
 import Profile from './components/Profile/Profile'
 import SignUp from './components/SignUp/SignUp'
@@ -37,7 +37,7 @@ function MainRouter({ user, handleLogout, handleLogin }) {
 
        
                 <Route path='/goals' element={<PrivateRoute><Goal /></PrivateRoute>} />
-                <Route path='/habits' element={<Habit />} />
+                <Route path='/habits' element={<Habit  />}  />
                 <Route path='/tasks' element={<PrivateRoute><Task /></PrivateRoute>} />
                 <Route path='/about-us' element={<PrivateRoute><About-Us /></PrivateRoute>} />
                 <Route path='/profile' element={

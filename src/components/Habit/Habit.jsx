@@ -2,18 +2,119 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
-import './Habit.css'
+// import './Habit.css'
 
-function Habit() {
-    const [habitInput, setHabitInput] = useState('')
-    // const [daysCompleted, setDaysCompleted] = useState(Array(31).fill(false))
-    const [habitList, setHabitList] = useState([])
+// const Habit = () => {
+//     const [habits, setHabits] = useState([])
+//     const [newHabit, setNewHabit] = useState('')
+//     const [editIndex, setEditIndex] = useState(null)
+//     const [editHabit, setEditHabit] = useState('')
 
-   
-async function allCompletedHabits() {
-        try {console.log(Habit)
-            
+//     // const [daysCompleted, setDaysCompleted] = useState(Array(31).fill(false))
+
+//     // const [habit, setHabit] = useState('')
+
+
+
+//     useEffect(() => {
+//         const fetchHabits = async () => {
+//             try {
+//                 const response = await axios.get('http://localhost:3000/api/habits/get-all-habits')
+//                 setHabits(response.data)
+//             } catch (error) {
+//                 console.error("Error fetching habits:", error)
+//             }
+//         }
+//         fetchHabits()
+//     }, [])
+
+//     const addHabit = async () => {
+//         if (newHabit === '')
+//             return
+//         const habit = {
+//             name: newHabit
+//             days: Array(31).fill(false)
+//         }
+//         try {
+
+//             const response = await axios.post('http://localhost:3000/api/habits/create-habit', { habit: habitInput })
+//             console.log(response)
+//             setHabits([...habits, response.data])
+//             setNewHabit('')
+//         } catch (error) {
+//             console.log("Error adding habit:", error)
+//         }
+//     }
+
+
+
+
+    // const handleHabitChange = (e) => {
+    //     setHabitInput(e.target.value)
+    // }
+
+    // const toggleDay = async (habitIndex, dayIndex) => {
+    //     const updatedHabits = [...habits]
+    //     updatedHabits[habitIndex].days[dayIndex] =
+    //         !updatedHabits[habitIndex].days[dayIndex]
+    //     // newDays[index] = !newDays[index]
+    //     setHabits(updatedHabits)
+    //     try {
+    //         const habitToUpdate = updatedHabits[habitIndex]
+    //         await axios.put(`http://localhost:3000/api/habits/update-habit-by-id/${id}`, habitToUpdate)
+    //     } catch (error) {
+    //         console.log("Error updating habit:", error)
+    //     }
+    //     // setEditIndex(null)
+    //     // setEditHabit('')
+    // }
+
+    // const handleEdit = (id, updateObj) => {
+    //     setEditIndex(id, updateObj)
+    //     setEditHabit(habits[habitIndex].name)
+    // }
+    // const saveEdit = async (id, updateObj) => {
+    //    const updatedHabits = [...habits]
+    //    updatedHabits[updateObj].name = editHabit
+    //    setHabits(id,updateObj)
+    // }
+    //     try {
+    //         const habitToUpdate =updatedHabits[habitIndex]
+    //         const response = await axios.put(`http://localhost:3000/api/habits/update-habit-by-id/${id}`, updateObj)
+    //         console.log(response.data.payload)
+    //         const newList = habitList.map(item => {
+    //             if (item._id === id) {
+    //                 item = response.data.payload
+    //             }
+    //             return item
+    //         })
+    //         setHabits(newList)
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
+
+    async function habitDelete(id, deleteObj) {
+        try {
+            await axios.delete(`http://localhost:3000/api/habits/delete-habit-by-id/${id}`, deleteObj)
+            const newList = habitList.filter(item => item._id !== id)
+            setHabits(newList)
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+
+
+
+
+    async function allCompletedHabits() {
+        try {
+
             const response = await axios.get('http://localhost:3000/api/habits/get-all-habits')
+
+
             const completed = response.data.payload.filter(item => item.isDone === false)
             setHabitList(completed)
         } catch (error) {
@@ -25,6 +126,8 @@ async function allCompletedHabits() {
     async function nonCompletedHabits() {
         try {
             const response = await axios.get('http://localhost:3000/api/habits/get-all-habits')
+
+
             const notCompleted = response.data.payload.filter(item => item.isDone === false)
             setHabitList(notCompleted)
         } catch (error) {
@@ -34,118 +137,195 @@ async function allCompletedHabits() {
 
 
     // useEffect(() => {
-        async function getAllHabits() {
-            try {
-                const response = await axios.get('http://localhost:3000/api/habits/get-all-habits')
-               
-                setHabitList(response.data.body)
-                 console.log(response.data.body)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        // getAllHabits()
-    // }, [])
-
- async function addHabit(event) {
+    async function getAllHabits() {
         try {
-            event.preventDefault()
-            if (habitInput === '') {
-                return
-            }
-            const response = await axios.post('http://localhost:3000/api/habits/create-habit', { habit: habitInput })
-            setHabitList([...habitList, response.data.payload])
-            setHabitInput('')
+            const response = await axios.get('http://localhost:3000/api/habits/get-all-habits')
+            console.log(response)
+            setHabitList(response.data.body)
+            console.log(response.data.body)
         } catch (error) {
             console.log(error)
         }
     }
-
-    async function habitDelete(id, deleteObj) {
-        try {
-            await axios.delete(`http://localhost:3000/api/habits/delete-habit-by-id/${id}`, deleteObj)
-            const newList = habitList.filter(item => item._id !== id)
-            setHabitList(newList)
-        } catch (error) {
-            console.log(error)
-        }
-
-    }
-
-
-
-
- async function handleEdit(id, updateObj) {
-        try {
-            const response = await axios.put(`http://localhost:3000/api/habits/update-habit-by-id/${id}`, updateObj)
-            console.log(response.data.payload)
-            const newList = habitList.map(item => {
-                if (item._id === id) {
-                    item = response.data.payload
-                }
-                return item
-            })
-            setHabitList(newList)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
+    getAllHabits()
+    }, [])
 
 
 
 
     return (
 
-        
-        // <div>Habit</div>
 
-        <div  style={{
-                marginLeft:'20%'
-             }}>
-            <div className='form-div'
-            >
-                <form onSubmit={e => addHabit(e)}>
-                    <input
-                        type="text"
-                        name="habit"
-                        value={habitInput}
-                        onChange={e => setHabitInput(e.target.value)}
-                    />
-                    <button type='add'>Add Item</button>
-                </form>
-            </div>
-            <div className='habit-div'>
-                <ul>
+        //         <form onSubmit={e => addHabit(e)}>
+        //             <input
+        //                 type="text"
+        //                 placeholder='Add a habit...'
+        //                 name="habit"
+        //                 value={habitInput}
+        //                 onChange={e => setHabitInput(e.target.value)}
+        //             />
+        //             <button onClick='add'>Add Habit</button>
 
-                    <div className='sorted-options'>
-                        {/* <button onClick={oldestFirst}>Sort Oldest to Newest</button> */}
-                        {/* <button onClick={newestFirst}>Sort Newest to Oldest</button> */}
-                        <button onClick={allCompletedHabits}>Completed Items</button>
-                        <button onClick={nonCompletedHabits}>Not yet Completed</button>
-                        <button onClick={getAllHabits}>Get All Habits</button>
 
-                    </div>
-                    {
-                        habitList.map((item) => {
-                            return <Habit
+//         <div className="habit-tracker">
+//             <h2>Habit Tracker</h2>
+//             <div className="habit-input">
+//                 {/* <label>Habit:</label> */}
+//                 <input
+//                     type="text"
+//                     placeholder="Enter your habit..."
+//                     value={habitInput}
+//                     onChange={(e) => setNewHabit(e.target.value)}
+//                     // onChange={handleHabitChange}
+//                 />
+//                 <button onClick={addHabit}>Add Habit</button>
+//             </div>
+//             {habits.map((habit, habitIndex) => (
+//                 <div key={habit.id || habitIndex} className='habit-row'>
 
-                                key={item._id}
-                                item={item}
-                                // oldestFirst={oldestFirst}
-                                // groceryPurchased={groceryPurchased}
-                                handleEdit={handleEdit}
-                                habitDelete={habitDelete} />
-                        })
-                    }
-                </ul>
-            </div>
-        </div>
+//                     {editIndex === habitIndex ? (
+//                         <div className='habit-edit'>
+//                             <input
+//                             type='text'
+//                             value='editHabit'
+//                             onChange={(e)=> setEditHabit(e.target.value)}
+//                             />
+//                             <button onClick={() => saveEdit(habitIndex)}>Save</button>
+//                         </div>
+//                     ) : (
+//                         <div className='habit-name'>{habit.name}</div>
+//                     )}
 
-    )
-}
+
+// <div className="days-container">
+//     {habit.days.map((isDone, dayIndex)=> (
+//         <div
+//         key={dayIndex}
+//         className={`day-box ${isDone ? "completed" : "" }` }
+//         onClick={() => toggleDay(habitIndex, dayIndex)}
+//         >
+//             {dayIndex + 1}
+//         </div>
+//     ))}
+// </div>
+//   {editIndex !== habitIndex && (
+//     <div className='habit-actions'>
+//         <button onClick={()=> handleEdit(habitIndex)}></button>
+//         <button onClick={() => habitDelete(habitIndex)}></button>
+//     </div>
+//   )}
+// </div>
+//             ))}
+//             </div>
+//     )
+
 
 export default Habit
+
+
+        /* //     <div className="days-completed"> */
+        /* //         {days.map((daysCompleted, index) => ( */ 
+        //             <div
+        //                 key={index}
+        //                 className={`day-box ${daysCompleted ? "completed" : ""}`}
+        //                 onClick={() => toggleDay(index)}
+        //             >
+        //                 {index + 1}
+        //             </div>
+        //         ))}
+
+        //         <div className='habit-div'>
+        // //         <ul>
+
+        // //             <div className='sorted-options'>
+        // //                 {/* <button onClick={oldestFirst}>Sort Oldest to Newest</button> */}
+        // //                 {/* <button onClick={newestFirst}>Sort Newest to Oldest</button> */}
+        // //                 <button onClick={allCompletedHabits}>Completed Items</button>
+        // //                 <button onClick={nonCompletedHabits}>Not yet Completed</button>
+        // //                 <button onClick={getAllHabits}>Get All Habits</button>
+
+        // //             </div>
+        // //             {
+        //                     habitList.map((item) => {
+        //                         return <Habit
+
+        //                             key={item._id}
+        //                             item={item}
+        //                             // oldestFirst={oldestFirst}
+        //                             // groceryPurchased={groceryPurchased}
+        //                             handleEdit={handleEdit}
+        //                             habitDelete={habitDelete} />
+        //                     })
+        //                 }
+        //             </ul>
+        //         </div>
+
+
+        //     </div>
+        // </div>
+
+
+
+        // <div  style={{
+        //         marginLeft:'20%'
+        //      }}>
+        //     <div className='form-div'
+        //     >
+
+/* <section class="theme-container">
+  <button class="theme" id="theme"></button>
+</section>
+<section className="habit-container">
+    <div className="habit">
+        <button className="habit-button">
+           😄 
+        </button>
+    </div>
+</section> */
+
+
+        //         <form onSubmit={e => addHabit(e)}>
+        //             <input
+        //                 type="text"
+        //                 placeholder='Add a habit...'
+        //                 name="habit"
+        //                 value={habitInput}
+        //                 onChange={e => setHabitInput(e.target.value)}
+        //             />
+        //             <button onClick='add'>Add Habit</button>
+        //         </form>
+        //     </div>
+        //     <div className='habit-div'>
+        //         <ul>
+
+        //             <div className='sorted-options'>
+        //                 {/* <button onClick={oldestFirst}>Sort Oldest to Newest</button> */}
+        //                 {/* <button onClick={newestFirst}>Sort Newest to Oldest</button> */}
+        //                 <button onClick={allCompletedHabits}>Completed Items</button>
+        //                 <button onClick={nonCompletedHabits}>Not yet Completed</button>
+        //                 <button onClick={getAllHabits}>Get All Habits</button>
+
+        //             </div>
+        //             {
+        //                 habitList.map((item) => {
+        //                     return <Habit
+
+        //                         key={item._id}
+        //                         item={item}
+        //                         // oldestFirst={oldestFirst}
+        //                         // groceryPurchased={groceryPurchased}
+        //                         handleEdit={handleEdit}
+        //                         habitDelete={habitDelete} />
+        //                 })
+        //             }
+        //         </ul>
+        //     </div>
+        // </div>
+
+    // )
+// }
+
+// export default Habit
 
 
 // habit: {
@@ -168,12 +348,12 @@ export default Habit
 
 
 // import Button from '../common/Button'
-
-
+// import './Habit.css'
+// import React, {  useState } from 'react'
 // const Habit = ({item, handleEdit, habitDelete,}) => {
 
 // const [isEditing, setIsEditing] = useState(false)
-//  const [editInput, setEditInput] = useState(item.habit)
+//  const [editInput, setEditInput] = useState('')
 
 
 //   return (

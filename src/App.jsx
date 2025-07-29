@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 import MainRouter from './MainRouter'
 import { jwtDecode } from 'jwt-decode'
 import { removeAuthToken, setAxiosAuthToken } from './utils/attachHeaders'
+// import Habit from './components/Habit/Habit2'
 
-
-// import React from 'react';
+// import Reacst from 'react';
 // import { Button, ConfigProvider, Flex } from 'antd';
 // import { useResponsive } from 'antd-style';
 
@@ -42,7 +42,10 @@ function App() {
     return (
 
 
-        <MainRouter user={user} handleLogout={handleLogout} handleLogin={handleLogin} />
+        <MainRouter user={user}
+         handleLogout={handleLogout}
+          handleLogin={handleLogin}
+           />
 
 
 

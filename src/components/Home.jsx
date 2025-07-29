@@ -12,12 +12,13 @@ function Home() {
 
       {/* <div className='img-container'> */}
       
-      Header
+    
       <h1 style={{
         color: "white",
         position: 'absolute',
         marginLeft: "30%",
         marginTop: '10%'
+        
       }}>Achieve Your Goals</h1>
 
       <img src="https://cdn.pixabay.com/photo/2017/08/10/12/44/shape-2622306_1280.jpg" alt="" />
@@ -29,6 +30,7 @@ function Home() {
         position: 'absolute',
         marginLeft: "20%",
         marginTop: '40%'
+       
       }}>
 
         <h3> A powerful productivity app designed to boost your efficiency and focus.</h3>

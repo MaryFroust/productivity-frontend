@@ -48,7 +48,7 @@ const Nav = ({ user, handleLogout }) => {
     <Drawer
       variant="permanent"
       sx={{
-        // display: flex,
+        display: 'flex',
         width: drawerWidth,
         flexShrink: 0,
         [`& .MuiDrawer-paper`]: 
