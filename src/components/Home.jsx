@@ -14,28 +14,34 @@ function Home() {
       
     
       <h1 style={{
-        color: "white",
+        textShadow: '5px 2px 1px black',
+        color: '#f80b99ff',
         position: 'absolute',
-        marginLeft: "30%",
-        marginTop: '10%'
+        marginLeft: "25%",
+        marginTop: '10%',
+        fontSize: '70px' 
         
       }}>Achieve Your Goals</h1>
+      
 
       <img src="https://cdn.pixabay.com/photo/2017/08/10/12/44/shape-2622306_1280.jpg" alt="" />
 
       {/* </div> */}
 
       <div className='header' style={{
-        color: "white",
+        // textShadow: '2px 2px 1px #f80b99ff',
+        // textShadow: '2px 2px 1px #0bf8f4ff',
+        textShadow: '5px 2px 1px #480af4ff',
+        color: '#f80b99ff',
         position: 'absolute',
-        marginLeft: "20%",
-        marginTop: '40%'
+        marginLeft: "17%",
+        marginTop: '15%',
+        fontSize: '25px'
        
       }}>
 
         <h3> A powerful productivity app designed to boost your efficiency and focus.</h3>
 
-        {/* <h5 style={{ color: "black" }}> A powerful productivity app designed to boost your efficiency and focus.</h5> */}
 
         <p></p>
         <p></p>

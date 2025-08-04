@@ -33,7 +33,7 @@ function Login({handleLogin}) {
             })
             window.localStorage.setItem('proJwt', response.data.payload)
            setAxiosAuthToken(response.data.payload)
-            const jwt = response.data.payload
+           
            
           
           const user = jwtDecode(response.data.payload)

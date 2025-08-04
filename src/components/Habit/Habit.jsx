@@ -1,6 +1,135 @@
 
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+
+
+
+//  return (
+//         <>
+//                 <div className='form-div'>               
+//                     <h1><b>Habit Tracker</b></h1>                      
+//                 </div>
+                
+//                 <div className='habit-div' style={{
+//                     marginLeft: '250px',
+//                     border: '2px solid black',
+//                     display: 'flex',
+//                     flexDirection: 'column', // Stack table and form vertically
+//                     height: 'auto', // Let it grow with content
+//                     padding: '20px'
+//                 }}>                   
+        
+//                     <table style={{padding: '10px', marginLeft: '50px', marginBottom: '20px'}}>
+//                         <tbody>
+//                             {habits.map((habit, index) => {
+//                                 const days = []
+//                                 for(let i = 0; i < 31; i++){
+//                                     days.push(
+//                                         <td 
+//                                             key={i}
+//                                             className={`Task ${habit.daysCompleted && habit.daysCompleted.includes(i + 1) ? 'completed' : ''}`}
+//                                             style={{ 
+//                                                 justifyContent: 'space-evenly', 
+//                                                 padding: '5px',
+//                                                 cursor: 'pointer',
+//                                                 backgroundColor: habit.daysCompleted && habit.daysCompleted.includes(i + 1) ? '#90EE90' : '#f0f0f0',
+                                               
+//                                                   border: '1px solid #ddd',
+//                                                 textAlign: 'center',
+//                                                 minWidth: '30px'
+                                           
+//                                             }}
+//                                             onClick={() => toggleDay(habit._id, i + 1)} // Add click handler
+//                                         >                                                                                
+//                                             {i + 1}                                     
+//                                         </td>                                 
+//                                     )                                   
+//                                 }
+//                                 return (
+//                                     <tr key={habit._id || index}> {/* Use _id if available */}
+//                                         <td style={{padding: '5px', fontWeight: 'bold', minWidth: '100px'}}>{habit.name}</td>
+//                                         {days}
+//                                         <td style={{padding: '5px'}}>                                   
+//                                             <ConfigProvider componentSize={xxl ? 'middle' : 'small'}>
+//                                                 <Flex vertical gap="small">
+//                                                     <Flex gap="small" wrap>
+//                                                         <Button 
+//                                                             color="pink" 
+//                                                             variant="dashed"
+//                                                             onClick={() => handleEdit(habit._id)}
+//                                                         >
+//                                                             Edit
+//                                                         </Button>
+//                                                         <Button 
+//                                                             color="pink" 
+//                                                             variant="dashed"
+//                                                             onClick={() => habitDelete(habit._id)}
+//                                                         >
+//                                                             Delete
+//                                                         </Button>
+//                                                     </Flex>
+//                                                 </Flex>
+//                                             </ConfigProvider>
+//                                         </td>
+//                                     </tr>                                                 
+//                                 )
+//                             })}
+//                         </tbody>
+//                     </table>         
+                    
+//                     {/* Move the form outside the table */}
+//                     <div style={{  marginLeft: '200px', 
+//                         padding: '10px',
+//                         border: '1px solid #ccc',
+//                         borderRadius: '5px',
+//                         backgroundColor: '#f9f9f9',
+//                         width: 'fit-content' }}>
+//                         <form onSubmit={(e) => { e.preventDefault(); addHabit(); }}>
+//                             <input 
+//                                 type="text"
+//                                 placeholder="Enter new habit"
+//                                 value={newHabit} 
+//                                 onChange={(e) => setNewHabit(e.target.value)} 
+                        
+//                                 style={{
+//                                     padding: '8px',
+//                                     marginRight: '10px',
+//                                     border: '1px solid #ddd',
+//                                     borderRadius: '4px'
+//                                 }}
+
+//                             />
+//                             <button type="submit"
+                            
+//                              style={{
+//                                     padding: '8px 16px',
+//                                     backgroundColor: '#ff69b4',
+//                                     color: 'white',
+//                                     border: 'none',
+//                                     borderRadius: '4px',
+//                                     cursor: 'pointer'
+//                                 }}
+
+//                             >Add Habit</button>
+//                         </form>
+//                     </div>
+//                 </div>
+//             </div>
+//         </>
+//     )
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // import './Habit.css'
 
@@ -16,37 +145,8 @@ import axios from 'axios'
 
 
 
-//     useEffect(() => {
-//         const fetchHabits = async () => {
-//             try {
-//                 const response = await axios.get('http://localhost:3000/api/habits/get-all-habits')
-//                 setHabits(response.data)
-//             } catch (error) {
-//                 console.error("Error fetching habits:", error)
-//             }
-//         }
-//         fetchHabits()
-//     }, [])
-
-//     const addHabit = async () => {
-//         if (newHabit === '')
-//             return
-//         const habit = {
-//             name: newHabit
-//             days: Array(31).fill(false)
-//         }
-//         try {
-
-//             const response = await axios.post('http://localhost:3000/api/habits/create-habit', { habit: habitInput })
-//             console.log(response)
-//             setHabits([...habits, response.data])
-//             setNewHabit('')
-//         } catch (error) {
-//             console.log("Error adding habit:", error)
-//         }
-//     }
-
-
+//     
+//    
 
 
     // const handleHabitChange = (e) => {
@@ -69,42 +169,9 @@ import axios from 'axios'
     //     // setEditHabit('')
     // }
 
-    // const handleEdit = (id, updateObj) => {
-    //     setEditIndex(id, updateObj)
-    //     setEditHabit(habits[habitIndex].name)
-    // }
-    // const saveEdit = async (id, updateObj) => {
-    //    const updatedHabits = [...habits]
-    //    updatedHabits[updateObj].name = editHabit
-    //    setHabits(id,updateObj)
-    // }
-    //     try {
-    //         const habitToUpdate =updatedHabits[habitIndex]
-    //         const response = await axios.put(`http://localhost:3000/api/habits/update-habit-by-id/${id}`, updateObj)
-    //         console.log(response.data.payload)
-    //         const newList = habitList.map(item => {
-    //             if (item._id === id) {
-    //                 item = response.data.payload
-    //             }
-    //             return item
-    //         })
-    //         setHabits(newList)
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
+    // 
 
-    async function habitDelete(id, deleteObj) {
-        try {
-            await axios.delete(`http://localhost:3000/api/habits/delete-habit-by-id/${id}`, deleteObj)
-            const newList = habitList.filter(item => item._id !== id)
-            setHabits(newList)
-        } catch (error) {
-            console.log(error)
-        }
-
-    }
-
+   
 
 
 
@@ -136,22 +203,8 @@ import axios from 'axios'
     }
 
 
-    // useEffect(() => {
-    async function getAllHabits() {
-        try {
-            const response = await axios.get('http://localhost:3000/api/habits/get-all-habits')
-            console.log(response)
-            setHabitList(response.data.body)
-            console.log(response.data.body)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-    getAllHabits()
-    }, [])
-
-
-
+   
+   
 
     return (
 
