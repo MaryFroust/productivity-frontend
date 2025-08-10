@@ -15,6 +15,8 @@ function App() {
 
     useEffect(() => {
         const jwt = window.localStorage.getItem('proJwt')
+        console.log('JWT from storage:', jwt)
+
         const currentUser = jwt ? jwtDecode(jwt) : null
 
         if (currentUser && currentUser.exp > (Date.now() / 1000)) {
@@ -43,91 +45,91 @@ function App() {
 
 
         <MainRouter user={user}
-         handleLogout={handleLogout}
-          handleLogin={handleLogin}
-           />
+            handleLogout={handleLogout}
+            handleLogin={handleLogin}
+        />
 
 
 
 
 
- 
-//   <>
-//      <ConfigProvider componentSize={xxl ? 'middle' : 'small'}>
-//       <Flex vertical gap="small">
-       
-//         <Flex gap="small" wrap>
-//           <Button color="primary" variant="solid">
-//             Solid
-//           </Button>
-//           <Button color="primary" variant="outlined">
-//             Outlined
-//           </Button>
-//           <Button color="primary" variant="dashed">
-//             Dashed
-//           </Button>
-//           <Button color="primary" variant="filled">
-//             Filled
-//           </Button>
-          
-//         </Flex>
-      
-//         <Flex gap="small" wrap>
-//           <Button color="pink" variant="solid">
-//             Solid
-//           </Button>
-//           <Button color="pink" variant="outlined">
-//             Outlined
-//           </Button>
-//           <Button color="pink" variant="dashed">
-//             Dashed
-//           </Button>
-//           <Button color="pink" variant="filled">
-//             Filled
-//           </Button>
-         
-//         </Flex>
-//         <Flex gap="small" wrap>
-//           <Button color="purple" variant="solid">
-//             Solid
-//           </Button>
-//           <Button color="purple" variant="outlined">
-//             Outlined
-//           </Button>
-//           <Button color="purple" variant="dashed">
-//             Dashed
-//           </Button>
-//           <Button color="purple" variant="filled">
-//             Filled
-//           </Button>
-          
-//         </Flex>
-//         <Flex gap="small" wrap>
-//           <Button color="cyan" variant="solid">
-//             Solid
-//           </Button>
-//           <Button color="cyan" variant="outlined">
-//             Outlined
-//           </Button>
-//           <Button color="cyan" variant="dashed">
-//             Dashed
-//           </Button>
-//           <Button color="cyan" variant="filled">
-//             Filled
-//           </Button>
-        
-//         </Flex>
-//       </Flex>
-//     </ConfigProvider>
-//     </> 
+
+        //   <>
+        //      <ConfigProvider componentSize={xxl ? 'middle' : 'small'}>
+        //       <Flex vertical gap="small">
+
+        //         <Flex gap="small" wrap>
+        //           <Button color="primary" variant="solid">
+        //             Solid
+        //           </Button>
+        //           <Button color="primary" variant="outlined">
+        //             Outlined
+        //           </Button>
+        //           <Button color="primary" variant="dashed">
+        //             Dashed
+        //           </Button>
+        //           <Button color="primary" variant="filled">
+        //             Filled
+        //           </Button>
+
+        //         </Flex>
+
+        //         <Flex gap="small" wrap>
+        //           <Button color="pink" variant="solid">
+        //             Solid
+        //           </Button>
+        //           <Button color="pink" variant="outlined">
+        //             Outlined
+        //           </Button>
+        //           <Button color="pink" variant="dashed">
+        //             Dashed
+        //           </Button>
+        //           <Button color="pink" variant="filled">
+        //             Filled
+        //           </Button>
+
+        //         </Flex>
+        //         <Flex gap="small" wrap>
+        //           <Button color="purple" variant="solid">
+        //             Solid
+        //           </Button>
+        //           <Button color="purple" variant="outlined">
+        //             Outlined
+        //           </Button>
+        //           <Button color="purple" variant="dashed">
+        //             Dashed
+        //           </Button>
+        //           <Button color="purple" variant="filled">
+        //             Filled
+        //           </Button>
+
+        //         </Flex>
+        //         <Flex gap="small" wrap>
+        //           <Button color="cyan" variant="solid">
+        //             Solid
+        //           </Button>
+        //           <Button color="cyan" variant="outlined">
+        //             Outlined
+        //           </Button>
+        //           <Button color="cyan" variant="dashed">
+        //             Dashed
+        //           </Button>
+        //           <Button color="cyan" variant="filled">
+        //             Filled
+        //           </Button>
+
+        //         </Flex>
+        //       </Flex>
+        //     </ConfigProvider>
+        //     </> 
 
 
-  );
+    );
 };
 
 
 
 
-    
+
 
 export default App

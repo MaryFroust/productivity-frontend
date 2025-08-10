@@ -35,7 +35,7 @@ function Login({handleLogin}) {
            setAxiosAuthToken(response.data.payload)
            
            
-          
+        //   console.log(response.data.payload) 
           const user = jwtDecode(response.data.payload)
             handleLogin(user)
             navigate('/home')

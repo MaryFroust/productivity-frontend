@@ -37,9 +37,9 @@ function MainRouter({ user, handleLogout, handleLogin }) {
 
        
                 <Route path='/goals' element={<PrivateRoute><Goal /></PrivateRoute>} />
-                <Route path='/habits' element={<Habit  />}  />
+                <Route path='/habits' element={<PrivateRoute><Habit/></PrivateRoute>} />
                 <Route path='/tasks' element={<PrivateRoute><Task /></PrivateRoute>} />
-                <Route path='/about-us' element={<PrivateRoute><About-Us /></PrivateRoute>} />
+                <Route path='/about-us' element={<About-Us/>} />
                 <Route path='/profile' element={
                     <PrivateRoute>
                         <Profile user={user} />

@@ -1,9 +1,3 @@
-
-
-
-
-
-
 import React from 'react';
 import { TableRow, TableCell, IconButton, Box } from '@mui/material';
 import { CheckCircleOutline, CircleOutlined, Edit, Delete } from '@mui/icons-material';
@@ -40,25 +34,6 @@ function HabitList({ habit, onToggleDayCompletion, onEdit, onDelete }) {
 }
 
 export default HabitList;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //   import React, { useEffect, useState } from 'react'
@@ -163,13 +138,7 @@ export default HabitList;
 //     }
 
 
-
-
-
 //     return (
-
-
-
 
         
 //         // <div>Habit</div>

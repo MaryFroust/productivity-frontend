@@ -48,7 +48,7 @@ function Habit() {
             try {
                 const response = await Axios.post('/habits/get-habits-by-month', { month, year })
                 console.log(response)
-                setHabits(response.data.body)
+                setHabits(response.data.payload)
                 console.log(response.data.body)
             } catch (error) {
                 console.log(error)
@@ -70,33 +70,88 @@ function Habit() {
 
     }
 
-const addHabit = async () => {
-//   if (!newHabit)
-     if (newHabit === '')
-    return;
+    const addHabit = async () => {
+        //   if (!newHabit)
+        if (newHabit === '')
+            return;
 
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth() + 1;
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = today.getMonth() + 1;
 
-  try {
-    const response = await Axios.post('/create-habit', {
-      name: newHabit,
-      year,
-      month,
-      days: [], // optional: could be omitted
-    });
+        try {
+            const response = await Axios.post('/habits/create-habit', {
+                name: newHabit,
+                year,
+                month,
+                days: [], // optional: could be omitted
+            });
 
-    setHabits([...habits, response.data.payload]);
-    setNewHabit('');
-  } catch (error) {
-    console.log("Error adding habit:", error);
-  }
-};
+            setHabits([...habits, response.data.payload]);
+            setNewHabit('');
+        } catch (error) {
+            console.log("Error adding habit:", error);
+        }
+    };
+
+    const handleEdit = (id) => {
+
+        setHabitIndex(id)
+        setEditHabit(habits[id].name)
+    }
+
+    const saveEdit = async (id) => {
+        const updatedHabits = [...habits];
+        updatedHabits[habitIndex].name = editHabit;
+
+        try {
+            const response = await Axios.put(`/habits/update-habit-by-id/${id}`, {
+                name: editHabit,
+            });
+            const newList = habits.map((item) =>
+                item._id === id ? response.data.payload : item
+            );
+            setHabits(newList);
+            setHabitIndex(null);
+            setEditHabit('');
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
 
 
+    
 
+    const toggleDay = async (habitId, day) => {
+        // try {
+        //     const response = await Axios.put(`/habits/toggle-day`, {
+        //         habitId,
+        //         day,
+        //     });
+
+        // Optimistically update UI:
+        const updatedHabits = habits.map(habit => {
+            if (habit._id === habitId) {
+                const alreadyCompleted = habit.daysCompleted.includes(day);
+                const updatedDays = alreadyCompleted
+                    ? habit.daysCompleted.filter(d => d !== day)
+                    : [...habit.daysCompleted, day];
+
+                return { ...habit, daysCompleted: updatedDays };
+            }
+            return habit;
+        });
+        setHabits(updatedHabits);
+
+        try {
+            await Axios.put(`/habits/toggle-day`, { habitId, day, });
+
+        } catch (error) {
+            console.log("Error toggling day:", error);
+            setHabits(habits)
+        }
+    };
 
 
 
@@ -122,74 +177,6 @@ const addHabit = async () => {
     //     }
     // }
 
-    const handleEdit = (id) => {
-
-        setHabitIndex(id)
-        setEditHabit(habits[habitIndex].name)
-    }
-
-    const saveEdit = async (id) => {
-        const updatedHabits = [...habits];
-        updatedHabits[habitIndex].name = editHabit;
-
-        try {
-            const response = await Axios.put(`/habits/update-habit-by-id/${id}`, {
-                name: editHabit,
-            });
-            const newList = habits.map((item) =>
-                item._id === id ? response.data.payload : item
-            );
-            setHabits(newList);
-            setHabitIndex(null);
-            setEditHabit('');
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-
-
-
-
-
-    // const saveEdit = async (id) => {
-    //     // const habitToUpdate = updatedHabits[habitIndex];
-    //     const updatedHabits = [...habits];
-    //     updatedHabits[id].name = editHabit;
-
-    //     try {
-    //         const response = await Axios.put(`/habits/update-habit-by-id/${id}`, {
-    //             name: editHabit,
-    //         });
-    //         console.log(response.data.payload);
-
-    //         const newList = habits.map((item) =>
-    //             item._id === id ? response.data.payload : item
-    //         );
-    //         setHabits(index);
-    //         setHabitIndex(null);
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // };
-
-
-
-    //         const response = await Axios.put(`/habits/update-habit-by-id/${id}`, updateObj);
-    //         console.log(response.data.payload);
-    //         const newList = habitList.map(item => {
-    //             if (item._id === id) {
-    //                 item = response.data.payload;
-    //             }
-    //             return item;
-    //         });
-    //         setHabits(newList);
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // };
-
-
 
     //     const saveEdit = async (id, updateObj) => {
     //         const updatedHabits = [...habits]
@@ -213,128 +200,370 @@ const addHabit = async () => {
     // }
 
 
-    return (
-        <>
-            <div style={{
-                display: 'flex',
-                marginLeft: '150px',
-                backgroundColor: 'aqua',
-                flexDirection: 'column',
-                height: '100vh',
-                alignItems: 'center'
-                // marginLeft:'20%'
-            }}>
+return (
+    <div className="habit-page-container">
+        <div className="background-animation"></div>
+        
+        <div className="habit-content">
+            <div className='form-div'>
+                <h1 className="main-title">🎯 Habit Tracker</h1>
+                <p className="subtitle">Build consistency, one day at a time</p>
+            </div>
+            
+            <div className='habits-grid'>
+                {habits.map((habit, index) => (
+                    <div key={habit._id} className="habit-card">
+                        <div className="habit-header">
+                            <div className="habit-name-section">
+                                {habitIndex === index ? (
+                                    <div className="edit-section">
+                                        <input
+                                            className="edit-input"
+                                            value={editHabit}
+                                            onChange={(e) => setEditHabit(e.target.value)}
+                                            onKeyPress={(e) => e.key === 'Enter' && saveEdit(habit._id)}
+                                            autoFocus
+                                        />
+                                        <div className="edit-buttons">
+                                            <button 
+                                                className="save-btn"
+                                                onClick={() => saveEdit(habit._id)}
+                                            >
+                                                ✅ Save
+                                            </button>
+                                            <button 
+                                                className="cancel-btn"
+                                                onClick={() => {
+                                                    setHabitIndex(null);
+                                                    setEditHabit('');
+                                                }}
+                                            >
+                                                ❌ Cancel
+                                            </button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <h3 className="habit-title">{habit.name}</h3>
+                                        <div className="habit-actions">
+                                            <button
+                                                className="edit-btn"
+                                                onClick={() => handleEdit(index)}
+                                                title="Edit habit"
+                                            >
+                                                ✏️
+                                            </button>
+                                            <button
+                                                className="delete-btn"
+                                                onClick={() => habitDelete(habit._id)}
+                                                title="Delete habit"
+                                            >
+                                                🗑️
+                                            </button>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                        
+                        <div className="days-container">
+                            <div className="days-grid">
+                                {Array.from({ length: 31 }, (_, i) => {
+                                    const day = i + 1;
+                                    const isCompleted = habit.daysCompleted.includes(day);
+                                    
+                                    return (
+                                        <div
+                                            key={i}
+                                            className={`day-box ${isCompleted ? 'completed' : 'incomplete'}`}
+                                            onClick={() => toggleDay(habit._id, day)}
+                                            title={`Day ${day} - ${isCompleted ? 'Completed' : 'Not completed'}`}
+                                        >
+                                            <span className="day-number">{day}</span>
+                                            {isCompleted && <div className="check-mark">✓</div>}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                        
+                        <div className="habit-stats">
+                            <div className="progress-info">
+                                <span className="completed-days">
+                                    {habit.daysCompleted.length}/31 days
+                                </span>
+                                <div className="progress-bar">
+                                    <div 
+                                        className="progress-fill"
+                                        style={{ 
+                                            width: `${(habit.daysCompleted.length / 31) * 100}%` 
+                                        }}
+                                    ></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
 
-                <div className='form-div' >
-                    {/* <form > */}
-                    <h1><b>Habit Tracker</b></h1>
+            <div className="add-habit-card">
+                <h3>➕ Add New Habit</h3>
+                <div className="add-habit-form">
+                    <input
+                        type="text"
+                        className="new-habit-input"
+                        placeholder="Enter your new habit..."
+                        value={newHabit}
+                        onChange={(e) => setNewHabit(e.target.value)}
+                        onKeyPress={(e) => e.key === 'Enter' && addHabit()}
+                    />
+                    <button className="add-habit-btn" onClick={addHabit}>
+                        Add Habit
+                    </button>
                 </div>
-                <div className='habit-div'
-                    style={{
-                        marginLeft: '90px',
+            </div>
+        </div>
+    </div>
+)}
+
+
+
+
+
+
+
+
+
+
+
+
+// Replace your return statement with this cleaned-up version:
+
+// return (
+//     <div className="main-container">
+//         <div className='form-div'>
+//             <h1><b>Habit Tracker</b></h1>
+//         </div>
+        
+//         <div className='habit-div'>
+//             <table>
+//                 <tbody>
+//                     {habits.map((habit, index) => {
+//                         const days = [];
+//                         for (let i = 0; i < 31; i++) {
+//                             days.push(
+//                                 <td
+//                                     key={i}
+//                                     className={`day-cell ${habit.daysCompleted.includes(i + 1) ? 'completed' : 'incomplete'}`}
+//                                     onClick={() => toggleDay(habit._id, i + 1)}
+//                                 >
+//                                     <span className="day-number">{i + 1}</span>
+//                                 </td>
+//                             );
+//                         }
+
+//                         return (
+//                             <tr key={habit._id} className="habit-row">
+//                                 <td className="habit-name">{habit.name}</td>
+//                                 {days}
+//                                 <td className="actions-cell">
+//                                     <ConfigProvider componentSize={xxl ? 'middle' : 'small'}>
+//                                         <Flex gap="small" wrap>
+//                                             {habitIndex === index ? (
+//                                                 <>
+//                                                     <input
+//                                                         className="edit-input"
+//                                                         value={editHabit}
+//                                                         onChange={(e) => setEditHabit(e.target.value)}
+//                                                         onKeyPress={(e) => e.key === 'Enter' && saveEdit(habit._id)}
+//                                                     />
+//                                                     <Button 
+//                                                         type="primary" 
+//                                                         size="small"
+//                                                         onClick={() => saveEdit(habit._id)}
+//                                                     >
+//                                                         Save
+//                                                     </Button>
+//                                                     <Button 
+//                                                         size="small"
+//                                                         onClick={() => {
+//                                                             setHabitIndex(null);
+//                                                             setEditHabit('');
+//                                                         }}
+//                                                     >
+//                                                         Cancel
+//                                                     </Button>
+//                                                 </>
+//                                             ) : (
+//                                                 <>
+//                                                     <Button
+//                                                         color="primary"
+//                                                         variant="outlined"
+//                                                         size="small"
+//                                                         onClick={() => handleEdit(index)}
+//                                                     >
+//                                                         Edit
+//                                                     </Button>
+//                                                     <Button
+//                                                         color="danger"
+//                                                         variant="outlined"
+//                                                         size="small"
+//                                                         onClick={() => habitDelete(habit._id)}
+//                                                     >
+//                                                         Delete
+//                                                     </Button>
+//                                                 </>
+//                                             )}
+//                                         </Flex>
+//                                     </ConfigProvider>
+//                                 </td>
+//                             </tr>
+//                         );
+//                     })}
+//                 </tbody>
+//             </table>
+
+//             <div className="add-habit-section">
+//                 <input
+//                     type="text"
+//                     placeholder="Enter new habit..."
+//                     value={newHabit}
+//                     onChange={(e) => setNewHabit(e.target.value)}
+//                     onKeyPress={(e) => e.key === 'Enter' && addHabit()}
+//                 />
+//                 <button onClick={addHabit}>Add Habit</button>
+//             </div>
+//         </div>
+//     </div>
+// )}
+
+
+
+
+
+
+
+
+    // return (
+    //     <>
+    //         <div style={{
+    //             display: 'flex',
+    //             marginLeft: '150px',
+    //             backgroundColor: 'aqua',
+    //             flexDirection: 'column',
+    //             height: '100vh',
+    //             alignItems: 'center'
+    //             // marginLeft:'20%'
+    //         }}>
+
+    //             <div className='form-div' >
+    //                 {/* <form > */}
+    //                 <h1><b>Habit Tracker</b></h1>
+    //             </div>
+    //             <div className='habit-div'
+    //                 style={{
+    //                     marginLeft: '90px',
+
+
+
+
+
                         //                     border: '2px solid black',
                         //                     display: 'flex',
                         //                     flexDirection: 'column', // Stack table and form vertically
                         //                     height: 'auto', // Let it grow with content
                         //                     padding: '20px'                    
-
-
-
                         //  border: '2px solid black',
                         //  display: 'flex',
                         //  height: '30%',
-                    }} >
-                    <table style={{ padding: '10px', marginLeft: '50px' }} >
-                        <tbody >
-                            {habits.map((habit, index) => {
-                                const days = [];
-                                for (let i = 0; i < 31; i++) {
-                                    days.push(
-                                        <td
-                                            key={i}
-                                            className={`Task ${habit.daysCompleted.includes(i + 1) ? 'completed' : ''
-                                                }`}
-                                            style={{ justifyContent: 'space-evenly', padding: '5px' }}
-                                        >
-                                            {i + 1}
-                                        </td>
-                                    );
-
-                                }
-
-                                return (
-                                    <tr key={habit.name} className="button-div">
-                                        <td>{habit.name}</td>
-                                        {days}
-                                        <td>
-                                            <ConfigProvider componentSize={xxl ? 'middle' : 'small'}>
-                                                <Flex vertical gap="small">
-                                                    <Flex gap="small" wrap>
-
-                                                        {habitIndex === index ? (
-                                                            <>
-                                                                <input
-                                                                    value={editHabit}
-                                                                    onChange={(e) => setEditHabit(e.target.value)}
-                                                                />
-                                                                <Button onClick={() => saveEdit(habit._id)}>Save</Button>
-                                                            </>
-                                                        ) : (
-                                                            <Button
-                                                                color="pink"
-                                                                variant="dashed"
-                                                                onClick={() => handleEdit(index)}
-                                                            >
-                                                                Edit
-                                                            </Button>
-                                                        )}
-
-
-
-                                                        {/* <Button
-                              color="pink"
-                              variant="dashed"
-                              onClick={() => handleEdit(index)}
-                            >
-                              Edit
-                            </Button> */}
 
 
 
 
+                    // }} >
+                    // <table style={{ padding: '10px', marginLeft: '50px' }} >
+                    //     <tbody >
+                    //         {habits.map((habit, index) => {
+                    //             const days = [];
+                    //             for (let i = 0; i < 31; i++) {
+                    //                 days.push(
+
+                                    
+
+                                        // <td
+                                        //     key={i}
+                                        //     className={`Task ${habit.daysCompleted.includes(i + 1) ? 'completed' : ''}`}
+                                        //     style={{ justifyContent: 'space-evenly', padding: '5px', }}
+                                        //     onClick={() => toggleDay(habit._id, i + 1)}
+                                        // >
+                                        //     {i + 1}
+                                        // </td>
 
 
-                                                        <Button
-                                                            color="pink"
-                                                            variant="dashed"
-                                                            onClick={() => habitDelete(habit._id)}
-                                                        >
-                                                            Delete
-                                                        </Button>
-                                                    </Flex>
-                                                </Flex>
-                                            </ConfigProvider>
-                                        </td>
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
 
-                    <div style={{ marginTop: '20px' }}>
-                        <input
-                            type="text"
-                            name="habit"
-                            value={newHabit}
-                            onChange={(e) => setNewHabit(e.target.value)}
-                        />
-                        <button onClick={addHabit}>Add Habit</button>
-                    </div>
-                </div>
-            </div>
-        </>
-    );
-}
+//                                     );
+
+//                                 }
+
+//                                 return (
+//                                     <tr key={habit.name} className="button-div">
+//                                         <td>{habit.name}</td>
+//                                         {days}
+//                                         <td>
+//                                             <ConfigProvider componentSize={xxl ? 'middle' : 'small'}>
+//                                                 <Flex vertical gap="small">
+//                                                     <Flex gap="small" wrap>
+
+//                                                         {habitIndex === index ? (
+//                                                             <>
+//                                                                 <input
+//                                                                     value={editHabit}
+//                                                                     onChange={(e) => setEditHabit(e.target.value)}
+//                                                                 />
+//                                                                 <Button onClick={() => saveEdit(habit._id)}>Save</Button>
+//                                                             </>
+//                                                         ) : (
+//                                                             <Button
+//                                                                 color="pink"
+//                                                                 variant="dashed"
+//                                                                 onClick={() => handleEdit(index)}
+//                                                             >
+//                                                                 Edit
+//                                                             </Button>
+//                                                         )}
+
+
+//                                                         <Button
+//                                                             color="pink"
+//                                                             variant="dashed"
+//                                                             onClick={() => habitDelete(habit._id)}
+//                                                         >
+//                                                             Delete
+//                                                         </Button>
+//                                                     </Flex>
+//                                                 </Flex>
+//                                             </ConfigProvider>
+//                                         </td>
+//                                     </tr>
+//                                 );
+//                             })}
+//                         </tbody>
+//                     </table>
+
+//                     <div style={{ marginTop: '20px' }}>
+//                         <input
+//                             type="text"
+//                             name="habit"
+//                             value={newHabit}
+//                             onChange={(e) => setNewHabit(e.target.value)}
+//                         />
+//                         <button onClick={addHabit}>Add Habit</button>
+//                     </div>
+//                 </div>
+//             </div>
+//         </>
+//     );
+// }
 
 export default Habit
 
@@ -385,23 +614,6 @@ export default Habit
 
 //     )
 // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -593,12 +805,6 @@ export default Habit
 
 
 
-
-
-
-
-
-
 // /     const toggleDayCompletion = (habitId, dayIndex) => {
 //     setHabits((prevHabits) =>
 //       prevHabits.map((habit) =>
@@ -613,13 +819,6 @@ export default Habit
 //       )
 //     );
 //   };
-
-
-
-
-
-
-
 
 
 
