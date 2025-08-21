@@ -1,9 +1,9 @@
 
 import React, { useEffect, useState } from 'react'
+import Axios from '../../utils/Axios'
 import './Habit.css'
 import { Button, ConfigProvider, Flex } from 'antd'
 // import { useResponsive } from 'antd-style'
-import Axios from '../../utils/Axios'
 
 const mockData = [{
     name: "Study",
@@ -74,7 +74,6 @@ function Habit() {
                 name: newHabit,
                 year,
                 month,
-                days: [],
             })
             setHabits([...habits, response.data.payload])
             setNewHabit('')
@@ -114,19 +113,19 @@ function Habit() {
                 const updatedDays = alreadyCompleted
                     ? habit.daysCompleted.filter(d => d !== day)
                     : [...habit.daysCompleted, day];
-
+         console.log(habit)
                 return { ...habit, daysCompleted: updatedDays }
             }
             return habit
         })
         setHabits(updatedHabits)
-        try {
-            await Axios.put(`/habits/toggle-day`, { habitId, day, })
+        // try {
+        //     await Axios.put(`/habits/toggle-day`, { habitId, day, })
 
-        } catch (error) {
-            console.log("Error toggling day:", error)
-            setHabits(habits)
-        }
+        // } catch (error) {
+        //     console.log("Error toggling day:", error)
+        //     setHabits(habits)
+        // }
     }
 
     const goToPreviousMonth = () => {
@@ -139,6 +138,10 @@ function Habit() {
             }
         } catch (error) {
             console.error('Error navigating to previous month:', error)
+        // const today = new Date()
+        // setMonth(today.getMonth() + 1)
+        // setYear(today.getFullYear())
+
         }
     }
 
